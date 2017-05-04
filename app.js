@@ -2,6 +2,20 @@
   Build all of your functions for the application below.
 	Some functions have been stubbed out.
 */
+function beginSearch(people) {
+	var input = prompt("Enter name to search by name, or traits to search by trait.");
+	if (input.toLowerCase() == "name"){
+		filterByName(people);
+	}
+	else if (input.toLowerCase() == "traits") {
+		filterByTraits(people);
+	}
+	else{
+		alert("Please enter name or traits please.");
+		beginSearch(people);
+	}
+}
+
 function filterByName(people) {
 	var inputFirst = prompt("Enter first name.");
 	var inputLast = prompt("Enter last name.");
@@ -15,7 +29,7 @@ function filterByName(people) {
 	});
 
 	if(filteredPeople.length === 1){
-		displayResults(filteredPeople);
+		displaySoloResults(filteredPeople[0]);
 		getFamily(filteredPeople[0], people);
 	}
 	else if (filteredPeople.length < 1) {
@@ -36,6 +50,14 @@ function filterByName(people) {
 		filterByName(people);
 	}
 }
+
+function filterByTraits(people) {
+	var input = prompt("Enter the traits you would wish to search by, each in one word and separated by a comma! (THE OPTIONS ARE: age, height, weight, eyecolor & occupation.\n");
+    var lowercaseInput = input.toLowerCase();
+    var searchCriteria = lowercaseInput.replace(" ", "");
+	specificTraitSearch(people, searchCriteria, people);
+}
+
 
 function getFamily(person, people){
 	var parents = people.filter(function (el) {
@@ -81,7 +103,30 @@ function displayResults(people){
 	for(var i = 0; i < people.length; i++){
 		var fullName = people[i].firstName + " " + people[i].lastName;
 		names.push(fullName);
+
 	}
 	var joinedNames = names.join("\n");
     alert(joinedNames);
+}
+
+function displaySoloResults(person){
+
+    alert(person.firstName + " " + person.lastName + "\n\n" + "GENDER: " + person.gender + "\n" + "AGE: " + getAge(person.dob) + "\n" + "HEIGHT: " + convertInchesToFootInches(person.height) + "\n" + "WEIGHT: " + person.weight + "lbs\n" + "EYE COLOR: " + person.eyeColor + "\n" + "OCCUPATION: " + person.occupation + "\n");
+}
+
+function getAge(dateString){
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate()))
+    {
+        age--;
+    }
+    return age;
+}
+
+function convertInchesToFootInches(height){
+    var convertedHeight = ((height/12).toString().split(/[.]/)[0]) + "'" + (height % 12) + "''";
+    return convertedHeight;
 }
