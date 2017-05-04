@@ -58,7 +58,82 @@ function filterByTraits(people) {
 	specificTraitSearch(people, searchCriteria, people);
 }
 
+function specificTraitSearch(people, search, results){
+	var allResults = results;
 
+    if(search.includes("age")){
+		var ageInput = prompt("Enter an age to search by.");
+        allResults = allResults.filter(function (el) {
+        if (getAge(el.dob) == ageInput) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    });
+    }
+    if(search.includes("height")){
+		var heightInput = prompt("Enter a height to search by in inches.");
+        allResults = allResults.filter(function (el) {
+        if (el.height == heightInput) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    });
+    }
+    if(search.includes("weight")){
+		var weightInput = prompt("Enter a weight to search by in lbs.");
+        allResults = allResults.filter(function (el) {
+        if (el.weight == weightInput) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    });
+    }
+    if(search.includes("eyecolor")){
+		var eyeInput = prompt("Enter an eyecolor to search by.");
+        allResults = allResults.filter(function (el) {
+        if (el.eyeColor == eyeInput) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    });
+    }
+    if(search.includes("occupation")){
+		var occupationInput = prompt("Enter an occupation to search by.");
+        allResults = allResults.filter(function (el) {
+        if (el.occupation == occupationInput) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    });
+    }
+if(allResults.length === 1){
+		displaySoloResults(allResults[0]);
+        getFamily(allResults[0], people);
+	}
+	else{
+		displayResults(allResults);
+		var input = prompt("Type new to return to initial search screen, otherwise press enter.");
+		if(input.toLowerCase() == "new"){
+			beginSearch(people);
+		}
+		else {
+			var keywords = prompt("Enter the traits you would wish to search by, each in one word and separated by a comma! (THE OPTIONS ARE: age, height, weight, eyecolor & occupation.\n");
+			var lowercaseInput = keywords.toLowerCase();
+			var searchCriteria = lowercaseInput.replace(" ", "");
+			specificTraitSearch(people, searchCriteria, allResults);
+		}
+	}
+}
 function getFamily(person, people){
 	var parents = people.filter(function (el) {
 	return person.parents.includes(el.id);
